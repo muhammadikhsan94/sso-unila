@@ -1,0 +1,22 @@
+{
+  "name": "unila/sso",
+  "type": "library",
+  "description": "Utility Authentication with SSO-UNILA",
+  "keywords": ["authentication"],
+  "homepage": "http://muhammadikhsan94.github.io",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Muhammad Ikhsan",
+      "email": "muhammadikhsan208@gmail.com",
+      "homepage": "http://muhammadikhsan94.github.io"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "apereo/phpcas": "*"
+  },
+  "autoload": {
+    "psr-0": { "SSO": "."}
+  }
+}

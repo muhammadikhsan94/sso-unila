@@ -75,7 +75,7 @@ if (class_exists('phpCAS')) {
  * @class     SSO
  * @category  Authentication
  * @package   SSO 
- * @author    Bobby Priambodo <bobby.priambodo@gmail.com>
+ * @author    Muhammad Ikhsan <muhammadikhsan208@gmail.com>
  * @license   MIT
  */
 class SSO
@@ -116,11 +116,11 @@ class SSO
    */
   public static function getUser() {
     $details = phpCAS::getAttributes();
-    dd($details);
     // Create new user object, initially empty.
-    // $user = new \stdClass();
-    // $user->username = phpCAS::getUser();
-    // $user->name = $details['nama'];
+    $user = new \stdClass();
+    $user->username = phpCAS::getUser();
+    $user->firstname = $details['first_name'];
+    $user->lastname = $details['last_name'];
     // $user->role = $details['peran_user'];
 
     // if ($user->role === 'mahasiswa') {

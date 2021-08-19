@@ -1,32 +1,12 @@
 <?php
 /**
- * SSO - Utility library for authentication with SSO-UNILA
+ * Single Sign-on Authentication
  *
  * @author      Muhammad Ikhsan <muhammadikhsan208@gmail.com>
  * @copyright   2021 Muhammad Ikhsan
  * @license     MIT
  * @package     SSO
- *
- * MIT LICENSE
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*
  */
 namespace SSO;
 
@@ -70,7 +50,7 @@ if (class_exists('phpCAS')) {
 
 /**
  * The SSO class is a simple phpCAS interface for authenticating using
- * SSO-UI CAS service.
+ * SSO-UNILA CAS service.
  *
  * @class     SSO
  * @category  Authentication
@@ -115,26 +95,15 @@ class SSO
    * @return Object User
    */
   public static function getUser() {
+    
+    // Get attribute release from CAS SERVER
     $details = phpCAS::getAttributes();
+    
     // Create new user object, initially empty.
     $user = new \stdClass();
     $user->username = phpCAS::getUser();
     $user->firstname = $details['first_name'];
     $user->lastname = $details['last_name'];
-    // $user->role = $details['peran_user'];
-
-    // if ($user->role === 'mahasiswa') {
-    //   $user->npm = $details['npm'];
-    //   $user->org_code = $details['kd_org'];
-
-    //   $data = json_decode(file_get_contents( __DIR__ . '/additional-info.json'), true)[$user->org_code];
-    //   $user->faculty = $data['faculty'];
-    //   $user->study_program = $data['study_program'];
-    //   $user->educational_program = $data['educational_program'];
-    // }
-    // else if ($user->role === 'staff') {
-    //   $user->nip = $details['nip'];
-    // }
 
     return $user;
   }

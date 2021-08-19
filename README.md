@@ -6,11 +6,11 @@ Library PHP-Laravel untuk memudahkan aplikasi menggunakan fasilitas login SSO Un
 
 2. Install library *composer* dengan menjalankan perintah berikut di terminal *projejct* anda:
 
-    composer install
+        composer install
 
 3. Install library *Unila/SSO* dengan menjalankan perintah berikut di terminal *project* anda:
 
-    composer require Unila/SSO
+        composer require unila/sso
 
 ## Penggunaan
 

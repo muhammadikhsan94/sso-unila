@@ -86,7 +86,7 @@ class SSO
     if ($url === '')
       phpCAS::logout();
     else
-      phpCAS::logout(['url' => $url]);
+      phpCAS::logoutWithRedirectService($url);
   }
 
   /**
@@ -102,11 +102,11 @@ class SSO
     // Create new user object, initially empty.
     $user = new \stdClass();
     $user->username = phpCAS::getUser();
-    $user->nm_pengguna = $details['nm_pengguna'];
-    $user->approval_pengguna = $details['approval_pengguna'];
-    $user->a_aktif = $details['a_aktif'];
-    $user->disable = $details['disable'];
-    $user->last_sync = $details['last_sync'];
+    // $user->nm_pengguna = $details['nm_pengguna'];
+    // $user->approval_pengguna = $details['approval_pengguna'];
+    // $user->a_aktif = $details['a_aktif'];
+    // $user->disable = $details['disable'];
+    // $user->last_sync = $details['last_sync'];
 
     return $user;
   }

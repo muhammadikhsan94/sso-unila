@@ -53,6 +53,10 @@ Fungsi ini digunakan untuk mengecek apakah user pernah berhasil diotentikasi ata
 
 Pemanggilan ini akan mengakhiri otentikasi user.
 
+    SSO::logout(url('http://unila.ac.id'));
+
+Pemanggilan ini akan mengakhiri otentikasi user dan me-*redirect* ke halaman dashboard Unila.
+
 ## Thanks to
 
 1. PHP CAS

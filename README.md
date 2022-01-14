@@ -57,6 +57,46 @@ Pemanggilan ini akan mengakhiri otentikasi user.
 
 Pemanggilan ini akan mengakhiri otentikasi user dan me-*redirect* ke halaman dashboard Unila.
 
+## Koneksi dengan Aplikasi
+
+### Login
+
+    if(SSO::authenticate() == true) //mengecek apakah user telah login atau belum
+    {
+        if(SSO::check() == true) {
+            $check = User::where('username', SSO::getUser()->username)->first(); //mengecek apakah pengguna SSO memiliki username yang sama dengan username aplikasi
+            if(!is_null($check)) {
+                Auth::loginUsingId($check->id_pengguna); //mengotentikasi pengguna aplikasi
+                session()->flash('success', 'You are logged in!');
+                return redirect()->route('index');
+            } else {
+                alert()->error('Data pengguna tidak ditemukan, silahkan hubungi administrator.')->html(true);
+                return redirect()->route('auth.login'); //mengarahkan ke halaman login jika pengguna gagal diotentikasi oleh aplikasi
+            }
+        }
+    } else {
+        return redirect()->route('auth.logout'); //me-*redirect* user jika otentikasi SSO gagal, diarahkan untuk mengakhiri sesi login (jika ada)
+    }
+
+Fungsi ini digunakan untuk mengecek otentikasi SSO pada aplikasi
+
+### Logout
+
+    if(Auth::check()) { //mengecek otentikasi pada aplikasi
+        Auth::logout(); //mengakhiri otentikasi pada aplikasi
+        Session::flush(); //menghapus session pada aplikasi
+        alert()->success('Berhasil logout');
+        if(SSO::check()==true) { //mengecek otentikasi pada SSO
+            SSO::logout(url('/')); //mengakhiri otentikasi pada SSO dan me-*redirect* halaman ke aplikasi
+        } else {
+            return redirect('auth/login')->with('pesan', 'berhasil logout'); //menampilkan halaman login
+        }
+    } else {
+        return redirect('auth/login'); //menampilkan halaman login
+    }
+
+Fungsi ini digunakan untuk mengakhiri sesi otentikasi pada SSO dan Aplikasi
+
 ## Thanks to
 
 1. PHP CAS

@@ -19,7 +19,7 @@ use phpCAS;
 /**
  * CAS server host address
  */
-define('CAS_SERVER_HOST', 'https://sso.unila.ac.id');
+define('CAS_SERVER_HOST', 'sso.unila.ac.id');
 
 /**
  * CAS server uri

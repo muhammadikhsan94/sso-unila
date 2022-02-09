@@ -1,7 +1,7 @@
 # SSO-UNILA
 Library PHP-Laravel untuk memudahkan aplikasi menggunakan fasilitas login SSO Universitas Lampung.
 
-## Instalasi
+## Instalasi di Laravel
 1. Install Composer di Laptop/PC anda
 
 2. Install library *composer* dengan menjalankan perintah berikut di terminal *projejct* anda:
@@ -37,9 +37,9 @@ Pemanggilan ini akan me-*redirect* browser ke login SSO. Jika otentikasi berhasi
 Fungsi ini akan mengembalikan object `stdClass` yang memiliki detail dari user yang berhasil diotentikasi. Potongan kode nya sebagai berikut:
 
     $user = SSO::getUser();
-    echo $user->username            // menampilkan username dari user
-    echo $user->firstname           // menampilkan nama depan dari user
-    echo $user->lastname            // menampilkan nama belakang dari user
+    echo $user->username                // menampilkan username/email dari user
+    echo $user->nm_pengguna             // menampilkan nama lengkap dari user
+    echo $user->a_aktif                 // menampilkan status aktif dari user
 
 ### 3. Memeriksa otentikasi
 
@@ -61,41 +61,54 @@ Pemanggilan ini akan mengakhiri otentikasi user dan me-*redirect* ke halaman das
 
 ### Login
 
-    if(SSO::authenticate() == true) //mengecek apakah user telah login atau belum
-    {
-        if(SSO::check() == true) {
-            $check = User::where('username', SSO::getUser()->username)->first(); //mengecek apakah pengguna SSO memiliki username yang sama dengan username aplikasi
-            if(!is_null($check)) {
-                Auth::loginUsingId($check->id_pengguna); //mengotentikasi pengguna aplikasi
-                session()->flash('success', 'You are logged in!');
-                return redirect()->route('index');
-            } else {
-                alert()->error('Data pengguna tidak ditemukan, silahkan hubungi administrator.')->html(true);
-                return redirect()->route('auth.login'); //mengarahkan ke halaman login jika pengguna gagal diotentikasi oleh aplikasi
+    public function signing_process() {
+        if(SSO::authenticate() == true) //mengecek apakah user telah login atau belum
+        {
+            if(SSO::check() == true) {
+                $check = User::where('username', SSO::getUser()->username)->first(); //mengecek apakah pengguna SSO memiliki username yang sama dengan database aplikasi
+                if(!is_null($check)) {
+                    Auth::loginUsingId($check->id_pengguna); //mengotentikasi pengguna aplikasi
+                    session()->flash('success', 'You are logged in!');
+                    return redirect()->route('index');
+                } else {
+                    alert()->error('Data pengguna tidak ditemukan, silahkan hubungi administrator.')->html(true);
+                    return redirect()->route('auth.login'); //mengarahkan ke halaman login jika pengguna gagal diotentikasi oleh aplikasi
+                }
             }
+        } else {
+            return redirect()->route('auth.logout'); //me-*redirect* user jika otentikasi SSO gagal, diarahkan untuk mengakhiri sesi login (jika ada)
         }
-    } else {
-        return redirect()->route('auth.logout'); //me-*redirect* user jika otentikasi SSO gagal, diarahkan untuk mengakhiri sesi login (jika ada)
     }
 
 Fungsi ini digunakan untuk mengecek otentikasi SSO pada aplikasi
 
 ### Logout
-
-    if(Auth::check()) { //mengecek otentikasi pada aplikasi
-        Auth::logout(); //mengakhiri otentikasi pada aplikasi
-        Session::flush(); //menghapus session pada aplikasi
-        alert()->success('Berhasil logout');
-        if(SSO::check()==true) { //mengecek otentikasi pada SSO
-            SSO::logout(url('/')); //mengakhiri otentikasi pada SSO dan me-*redirect* halaman ke aplikasi
+    public function logout() {
+        if(Auth::check()) { //mengecek otentikasi pada aplikasi
+            Auth::logout(); //mengakhiri otentikasi pada aplikasi
+            Session::flush(); //menghapus session pada aplikasi
+            alert()->success('Berhasil logout');
+            if(SSO::check()==true) { //mengecek otentikasi pada SSO
+                SSO::logout(url('/')); //mengakhiri otentikasi pada SSO dan me-*redirect* halaman ke aplikasi
+            } else {
+                return redirect('auth/login')->with('pesan', 'berhasil logout'); //menampilkan halaman login
+            }
         } else {
-            return redirect('auth/login')->with('pesan', 'berhasil logout'); //menampilkan halaman login
+            return redirect('auth/login'); //menampilkan halaman login
         }
-    } else {
-        return redirect('auth/login'); //menampilkan halaman login
     }
 
 Fungsi ini digunakan untuk mengakhiri sesi otentikasi pada SSO dan Aplikasi
+
+### Middleware
+
+    if( ( SSO::check()==true && Auth::check() ) || Auth::check() ) {
+        return $next($request);
+    } else {
+        return redirect()->route('auth.logout');
+    }
+
+Fungsi ini digunakan untuk mengecek otentikasi pada SSO atau bawaan laravel
 
 ## Thanks to
 

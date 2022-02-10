@@ -87,9 +87,13 @@ Fungsi ini digunakan untuk mengecek otentikasi SSO pada aplikasi
     public function logout() {
         if(Auth::check()) { //mengecek otentikasi pada aplikasi
             Auth::logout(); //mengakhiri otentikasi pada aplikasi
-            Session::flush(); //menghapus session pada aplikasi
+            Session::invalidate(); //menghapus session pada aplikasi
             alert()->success('Berhasil logout');
-            return redirect('auth/login')->with('pesan', 'berhasil logout'); //menampilkan halaman login
+            if(SSO::check()) { //mengecek apakah sesi SSO aktif
+                SSO::logout(url('/')); //mengakhiri sesi SSO dan meredirect ke halaman aplikasi
+            } else {
+                return redirect('auth/login')->with('pesan', 'berhasil logout'); //menampilkan halaman login
+            }
         } else {
             return redirect('auth/login'); //menampilkan halaman login
         }

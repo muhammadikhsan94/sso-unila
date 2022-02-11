@@ -70,6 +70,13 @@ class SSO
     return phpCAS::forceAuthentication();
   }
 
+  public static function cookieClear() {
+    if (isset($_COOKIE['PHPSESSID'])) {
+        unset($_COOKIE['PHPSESSID']);
+        return setcookie('PHPSESSID', '', time() - 3600, '/'); // empty value and old timestamp
+    }
+  }
+
   /**
    * Check if the user is already authenticated.
    *

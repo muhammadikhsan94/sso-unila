@@ -58,14 +58,16 @@ Pemanggilan ini akan mengakhiri otentikasi user.
 
 Pemanggilan ini akan mengakhiri otentikasi user dan me-*redirect* ke halaman dashboard Unila.
 
+Kedua fungsi diatas digunakan untuk menerapkan Single Logout.
+
 ## Koneksi dengan Aplikasi
 
 ### Login
 
     public function signing_process() {
-        if(SSO::authenticate() == true) //mengecek apakah user telah login atau belum
+        if(SSO::authenticate()) //mengecek apakah user telah login atau belum
         {
-            if(SSO::check() == true) {
+            if(SSO::check()) {
                 $check = User::where('username', SSO::getUser()->username)->first(); //mengecek apakah pengguna SSO memiliki username yang sama dengan database aplikasi
                 if(!is_null($check)) {
                     Auth::loginUsingId($check->id_pengguna); //mengotentikasi pengguna aplikasi
@@ -86,14 +88,11 @@ Fungsi ini digunakan untuk mengecek otentikasi SSO pada aplikasi
 ### Logout
     public function logout() {
         if(Auth::check()) { //mengecek otentikasi pada aplikasi
-            Auth::logout(); //mengakhiri otentikasi pada aplikasi
-            Session::invalidate(); //menghapus session pada aplikasi
-            alert()->success('Berhasil logout');
-            if(SSO::check()) { //mengecek apakah sesi SSO aktif
-                SSO::logout(url('/')); //mengakhiri sesi SSO dan meredirect ke halaman aplikasi
-            } else {
-                return redirect('auth/login')->with('pesan', 'berhasil logout'); //menampilkan halaman login
-            }
+            SSO::cookieClear(); //Destroy Cookie
+            Session::flush(); //Destroy Session
+            Auth::logout(); //Destroy Auth
+            alert()->success('Berhasil logout'); //Alert
+            return redirect('auth/login')->with('pesan', 'berhasil logout'); //Redirect to login page
         } else {
             return redirect('auth/login'); //menampilkan halaman login
         }
@@ -103,7 +102,7 @@ Fungsi ini digunakan untuk mengakhiri sesi otentikasi pada SSO dan Aplikasi
 
 ### Middleware
 
-    if( ( SSO::check()==true && Auth::check() ) || Auth::check() ) {
+    if( SSO::check() || Auth::check() ) {
         return $next($request);
     } else {
         return redirect()->route('auth.logout');

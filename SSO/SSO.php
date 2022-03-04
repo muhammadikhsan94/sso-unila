@@ -77,6 +77,13 @@ class SSO
     }
   }
 
+  public static function ciCookieClear() {
+    if (isset($_COOKIE['ci_session'])) {
+        unset($_COOKIE['ci_session']);
+        return setcookie('ci_session', '', time() - 3600, '/'); // empty value and old timestamp
+    }
+  }
+
   /**
    * Check if the user is already authenticated.
    *

@@ -1,5 +1,5 @@
 # SSO-UNILA
-Library PHP-Laravel untuk memudahkan aplikasi menggunakan fasilitas login SSO Universitas Lampung.
+Library PHP untuk memudahkan aplikasi menggunakan fasilitas login SSO Universitas Lampung.
 
 ## Instalasi di Laravel
 1. Install Composer di Laptop/PC anda
@@ -88,7 +88,8 @@ Fungsi ini digunakan untuk mengecek otentikasi SSO pada aplikasi
 ### Logout
     public function logout() {
         if(Auth::check()) { //mengecek otentikasi pada aplikasi
-            SSO::cookieClear(); //Destroy Cookie
+            SSO::cookieClear(); //If destroy cookie laravel
+            SSO::ciCookieClear(); //If destroy cookie codeigniter4
             Session::flush(); //Destroy Session
             Auth::logout(); //Destroy Auth
             alert()->success('Berhasil logout'); //Alert
@@ -109,6 +110,10 @@ Fungsi ini digunakan untuk mengakhiri sesi otentikasi pada SSO dan Aplikasi
     }
 
 Fungsi ini digunakan untuk mengecek otentikasi pada SSO atau bawaan laravel
+
+## Penggunaan di Codeigniter 4
+
+Untuk penggunaan di Codeigniter 4 terdapat perubahan di folder *vendor/apereo/phpcas*. Ekstrak file *phpcas.zip* dalam folder *vendor/unila/sso* kemudiaan salin dan letakkan ke dalam folder *vendor/apereo/phpcas*.
 
 ## Thanks to
 

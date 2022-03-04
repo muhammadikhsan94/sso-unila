@@ -111,9 +111,9 @@ Fungsi ini digunakan untuk mengakhiri sesi otentikasi pada SSO dan Aplikasi
 
 Fungsi ini digunakan untuk mengecek otentikasi pada SSO atau bawaan laravel
 
-## Penggunaan di Codeigniter 4
+## Penggunaan di Codeigniter 4 menggunakan Composer
 
-Untuk penggunaan di Codeigniter 4 terdapat perubahan di folder *vendor/apereo/phpcas*. Ekstrak file *phpcas.zip* dalam folder *vendor/unila/sso* kemudiaan salin dan letakkan ke dalam folder *vendor/apereo/phpcas*.
+Untuk penggunaan di Codeigniter 4 terdapat perubahan di folder `vendor/apereo/phpcas`. Ekstrak file `phpcas.zip` dalam folder `vendor/unila/sso` kemudiaan salin dan letakkan ke dalam folder `vendor/apereo/phpcas`.
 
 ## Thanks to
 

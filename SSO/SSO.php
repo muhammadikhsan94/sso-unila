@@ -119,7 +119,6 @@ class SSO
     $user->nm_pengguna = $details['nm_pengguna'];
     $user->a_aktif = $details['a_aktif'];
     $user->last_sync = $details['last_sync'];
-    $user->id_peran = $details['id_peran'];
 
     return $user;
   }

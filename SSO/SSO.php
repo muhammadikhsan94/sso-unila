@@ -97,6 +97,17 @@ class SSO
    * Logout from SSO with URL redirection options
    */
   public static function logout($url='') {
+    
+    if (isset($_COOKIE['PHPSESSID'])) {
+      unset($_COOKIE['PHPSESSID']);
+      return setcookie('PHPSESSID', '', time() - 3600, '/'); // empty value and old timestamp
+    }
+    
+    if (isset($_COOKIE['ci_session'])) {
+      unset($_COOKIE['ci_session']);
+      return setcookie('ci_session', '', time() - 3600, '/'); // empty value and old timestamp
+    }
+
     if ($url === '')
       phpCAS::logout();
     else
@@ -118,6 +129,7 @@ class SSO
     $user->username     = phpCAS::getUser();
     $user->id_pengguna  = $details['id_pengguna'];
     $user->nm_pengguna  = $details['nm_pengguna'];
+    $user->email        = $details['email'];
     $user->a_aktif      = $details['a_aktif'];
     $user->last_sync    = $details['last_sync'];
 

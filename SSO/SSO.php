@@ -100,12 +100,10 @@ class SSO
     
     if (isset($_COOKIE['PHPSESSID'])) {
       unset($_COOKIE['PHPSESSID']);
-      return setcookie('PHPSESSID', '', time() - 3600, '/'); // empty value and old timestamps
     }
     
     if (isset($_COOKIE['ci_session'])) {
       unset($_COOKIE['ci_session']);
-      return setcookie('ci_session', '', time() - 3600, '/'); // empty value and old timestamps
     }
 
     if ($url === '')

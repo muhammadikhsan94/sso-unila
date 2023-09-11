@@ -41,7 +41,6 @@ Fungsi ini akan mengembalikan object `stdClass` yang memiliki detail dari user y
     echo $user->email                   // menampilkan email dari user
     echo $user->nm_pengguna             // menampilkan nama lengkap dari user
     echo $user->a_aktif                 // menampilkan status aktif dari user
-    echo $user->last_sync               // menampilkan tanggal sinkronisasi terakhir user
 
 ### 3. Memeriksa otentikasi
 
